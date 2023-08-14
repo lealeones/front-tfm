@@ -28,26 +28,28 @@ import { useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
 import FormStep1 from 'src/views/form-proj/FormStep1'
+import { FormSendProject } from 'src/components/FormSendProject/FormSendProject'
+import { SendProjectContextProvider } from 'src/components/context/sendProjectContext'
 
 
 
-// Pasos para subir un proyecto ??
-const steps = [
-  'Detalle',
-  'Subir archivo',
-  'Descargar comprobante',
-];
 
 
 
 const Dashboard = () => {
 
 
-const [nStep,setNStep] = useState<number>(0)
 
 
   return (
-<Box>
+
+<SendProjectContextProvider>
+<FormSendProject />
+</SendProjectContextProvider>
+
+
+
+/* <Box>
 <Stepper activeStep={0} alternativeLabel>
 {steps.map((label) => (
           <Step key={label}>
@@ -63,7 +65,7 @@ const [nStep,setNStep] = useState<number>(0)
 
 
 
-</Box>
+</Box> */
 
 
 

@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, Chip, FormControl, Grid, IconButton, InputAdornment, ListItem, OutlinedInput, Paper, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import { Card, CardContent, CardHeader, Chip, Grid, ListItem, Paper, TextField } from '@mui/material';
+import { SetStateAction, useState } from 'react';
 
 interface ChipData {
     key: number;
@@ -10,26 +10,27 @@ const FormStep1 = () => {
     //useStates
 
     const [keyWords, setKeyWords] = useState<ChipData[]>([])
-	const [currWord, setCurrWord] = useState<string>('');
+    const [currWord, setCurrWord] = useState<string>('');
 
     //Functions
     const handleDelete = (chipToDelete: ChipData) => () => {
         setKeyWords((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
     };
-	const handleChangeCurrWord = (e) => {
-		setCurrWord(e.target.value);
-  };
- const handleKeyUpCurrWord = (e) => {
-    console.log(e.keyCode);
-    if (e.keyCode == 32) {
-        const newChipData : ChipData = {key:keyWords.length + 1, label:currWord}
-        setKeyWords((oldState) => [...oldState, newChipData]);
-        setCurrWord('');
-    }
-};
+    const handleChangeCurrWord = (e: { target: { value: SetStateAction<string>; }; }) => {
+        setCurrWord(e.target.value);
+    };
+    const handleKeyUpCurrWord = (e: { keyCode: number; }) => {
+        console.log(e.keyCode);
+        if (e.keyCode == 32) {
+            const newChipData: ChipData = { key: keyWords.length + 1, label: currWord }
+            setKeyWords((oldState) => [...oldState, newChipData]);
+            setCurrWord('');
+        }
+    };
 
 
-    return (<Card>
+    return (
+    <Card>
         <CardHeader title='PASO 1' titleTypographyProps={{ variant: 'h6' }} />
         <CardContent>
             <form onSubmit={e => e.preventDefault()}>
@@ -67,26 +68,26 @@ const FormStep1 = () => {
 
                             {keyWords && keyWords.map((data) => {
                                 return (
-                                    <Grid>
-                                    <ListItem
-                                    alignItems="flex-start"
-                                    key={data.key} >
-                                        <Chip
-                                            label={data.label}
-                                            onDelete={handleDelete(data)}
-                                        />
-                                    </ListItem>
+                                    <Grid key={data.key}>
+                                        <ListItem
+                                            alignItems="flex-start"
+                                            key={data.key} >
+                                            <Chip
+                                                label={data.label}
+                                                onDelete={handleDelete(data)}
+                                            />
+                                        </ListItem>
                                     </Grid>
                                 );
                             })}
-                        <TextField
-                            fullWidth
-                            type='text'
-                            label='Anadir palabra claves'
-                            value={currWord}
-                            onChange={handleChangeCurrWord}
-                            onKeyDown={handleKeyUpCurrWord}
-                        />
+                            <TextField
+                                fullWidth
+                                type='text'
+                                label='Anadir palabra claves'
+                                value={currWord}
+                                onChange={handleChangeCurrWord}
+                                onKeyDown={handleKeyUpCurrWord}
+                            />
 
                         </Paper>
 
