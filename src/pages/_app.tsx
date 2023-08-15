@@ -3,9 +3,10 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
-
 // ** Loader Import
 import NProgress from 'nprogress'
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
 
 // ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
@@ -29,6 +30,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -51,9 +53,19 @@ if (themeConfig.routingLoader) {
   })
 }
 
+
+  loadDevMessages();
+  loadErrorMessages();
+
+
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const client = new ApolloClient({
+    uri: process.env.NEXT_PUBLIC_BACKEND_APP +'/graphql',
+    cache: new InMemoryCache(),
+  });
+
 
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
@@ -69,7 +81,7 @@ const App = (props: ExtendedAppProps) => {
         <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
+      <ApolloProvider client={client}>
       <SettingsProvider>
         <SettingsConsumer>
           {({ settings }) => {
@@ -77,6 +89,7 @@ const App = (props: ExtendedAppProps) => {
           }}
         </SettingsConsumer>
       </SettingsProvider>
+      </ApolloProvider>
     </CacheProvider>
   )
 }

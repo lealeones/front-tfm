@@ -28,23 +28,19 @@ import { useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import FormLayoutsBasic from 'src/views/form-layouts/FormLayoutsBasic'
 import FormStep1 from 'src/views/form-proj/FormStep1'
-import { FormSendProject } from 'src/components/FormSendProject/FormSendProject'
+import { FormSendStep1 } from 'src/components/FormSendProject/FormSendStep1'
 import { SendProjectContextProvider } from 'src/components/context/sendProjectContext'
-
-
-
+import { FormSendProject } from 'src/components/FormSendProject/FormSendProject'
 
 
 
 const Dashboard = () => {
 
-
-
-
   return (
-
 <SendProjectContextProvider>
-<FormSendProject />
+
+<FormSendProject/>
+
 </SendProjectContextProvider>
 
 

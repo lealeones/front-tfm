@@ -23,20 +23,27 @@ type FormDataProviderSendProject = {
 }
 
 
-export default function inicializarDataSendProject(dataForm: FormDataProviderSendProject) {
+export default function inicializarDataSendProject(dataForm?: FormDataProviderSendProject) {
 
     if (!dataForm) {
         return dataSendProjectEmpty
     }
     else {
-        return {
+
+        const dataQuery : DataSendProject = {
+            ...dataForm.dataForm,
             id: dataForm.dataForm.id,
             title: dataForm.dataForm.title,
             descr: dataForm.dataForm.descr,
             keywords: dataForm.dataForm.keywords,
             doc: dataForm.dataForm.doc,
-            creationDate: dataForm.dataForm.creationDate
-        }
+            creationDate: dataForm.dataForm.creationDate}
+
+        return dataQuery
+
+            
+
+        } 
     }
 
-}
+
