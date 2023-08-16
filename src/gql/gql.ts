@@ -15,6 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\nmutation crearUsuario($data:CreateUserInput!){\n  createUser(createUserInput:$data){\n    id\n  }\n}\n": types.CrearUsuarioDocument,
     "\nquery getLocation ($data: Int!){\n  getLocation(id:$data){\n      title\n      description\n      tipe\n    }\n  }\n": types.GetLocationDocument,
+    "\nquery login ($data:LoginInput!){\n    login(loginInput:$data){\n      id\n      username\n      mail\n      name\n      lastname\n      rol\n    }\n  }\n  ": types.LoginDocument,
     "\nmutation upFile ($data: CreateFileInput!){\n    createFile(createFileInput:$data){\n      fileName\n    }\n  }\n  ": types.UpFileDocument,
 };
 
@@ -40,6 +41,10 @@ export function graphql(source: "\nmutation crearUsuario($data:CreateUserInput!)
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\nquery getLocation ($data: Int!){\n  getLocation(id:$data){\n      title\n      description\n      tipe\n    }\n  }\n"): (typeof documents)["\nquery getLocation ($data: Int!){\n  getLocation(id:$data){\n      title\n      description\n      tipe\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nquery login ($data:LoginInput!){\n    login(loginInput:$data){\n      id\n      username\n      mail\n      name\n      lastname\n      rol\n    }\n  }\n  "): (typeof documents)["\nquery login ($data:LoginInput!){\n    login(loginInput:$data){\n      id\n      username\n      mail\n      name\n      lastname\n      rol\n    }\n  }\n  "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

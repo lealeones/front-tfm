@@ -51,11 +51,16 @@ export const FormProfileStep0 = () => {
         });
     }
 
+
     const handleChangeMailPw = (e: { target: { value: any; }; }) => {
+        // const regex = new RegExp('^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+        // if (!regex.test(e.target.value)) {
+            console.log("asd")
         handleSetDataForms({
             ...dataForms,
             mailpw: e.target.value,
         });
+   // }
     }
 
     return (
@@ -101,7 +106,7 @@ export const FormProfileStep0 = () => {
                                 <TextField
                                     fullWidth
                                     value={mailpw ? mailpw : ''}
-                                    type='text'
+                                    type='email'
                                     label='E-mail'
                                     helperText='Correo para recuperacion de contraseña'
                                     onChange={handleChangeMailPw}

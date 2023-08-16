@@ -4,7 +4,7 @@ import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react'
 // ** Next Imports
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-
+import { signIn, useSession } from "next-auth/react"
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -38,8 +38,12 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import login from 'src/backend-tfm/query/login'
+import { LoginInput } from 'src/gql/graphql'
 
 interface State {
+  username: string
   password: string
   showPassword: boolean
 }
@@ -63,8 +67,11 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 const LoginPage = () => {
+  const { data: session, status, update } = useSession()
+
   // ** State
   const [values, setValues] = useState<State>({
+    username: '',
     password: '',
     showPassword: false
   })
@@ -84,6 +91,34 @@ const LoginPage = () => {
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
+
+  const [QueryLogin, { loading, error, data }] = useLazyQuery(login);
+
+
+  const handleLogin = async () => {
+    const data: LoginInput = {
+      username: values.username,
+      pwd: values.password
+    }
+    const res = await QueryLogin({ variables: { data: data } })
+
+    if (res.data) {
+      update(res.data)
+      signIn("credentials", { callbackUrl: 'http://localhost:3000/' })
+    }
+  }
+
+
+
+
+
+  const handleClickLogin = () => {
+
+
+    handleLogin()
+  }
+
+  console.log("session", session)
 
   return (
     <Box className='content-center'>
@@ -169,7 +204,9 @@ const LoginPage = () => {
             <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} />
+
+            {/* INICIO FORMULARIO */}
+            <TextField autoFocus fullWidth id='email' label='User Name' sx={{ marginBottom: 4 }} onChange={handleChange('username')} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -205,7 +242,9 @@ const LoginPage = () => {
               size='large'
               variant='contained'
               sx={{ marginBottom: 7 }}
-              onClick={() => router.push('/')}
+              disabled={!values.username || !values.password}
+              onClick={handleClickLogin}
+            //{onClick={() => router.push('/')}}
             >
               Login
             </Button>

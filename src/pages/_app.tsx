@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { SessionProvider } from "next-auth/react"
 // ** Loader Import
 import NProgress from 'nprogress'
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
@@ -60,7 +61,7 @@ if (themeConfig.routingLoader) {
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const { Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps }  } = props
   const client = new ApolloClient({
     uri: process.env.NEXT_PUBLIC_BACKEND_APP +'/graphql',
     cache: new InMemoryCache(),
@@ -81,8 +82,10 @@ const App = (props: ExtendedAppProps) => {
         <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
+      <SessionProvider session={session}>
       <ApolloProvider client={client}>
       <SettingsProvider>
+        
         <SettingsConsumer>
           {({ settings }) => {
             return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
@@ -90,6 +93,7 @@ const App = (props: ExtendedAppProps) => {
         </SettingsConsumer>
       </SettingsProvider>
       </ApolloProvider>
+      </SessionProvider>
     </CacheProvider>
   )
 }

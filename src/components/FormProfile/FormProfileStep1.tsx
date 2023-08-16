@@ -15,6 +15,8 @@ export const FormProfileStep1 = () => {
         setActiveStep(activeStep + 1);
     }
     const handleChangeName = (e: { target: { value: any; }; }) => {
+        // const reg = new RegExp("[a-z]");
+        // setValid(reg.test(e.target.value));
         handleSetDataForms({
             ...dataForms,
             name: e.target.value,
