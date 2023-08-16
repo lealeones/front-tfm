@@ -25,14 +25,14 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "file",
+            "name": "dateUpload",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Upload",
+                "name": "DateTime",
                 "ofType": null
               }
             },
@@ -59,6 +59,22 @@
           {
             "name": "fileName",
             "description": "fileName",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "originalName",
+            "description": "originalName",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -259,7 +275,7 @@
         "description": null,
         "fields": [
           {
-            "name": "file",
+            "name": "dateUpload",
             "description": null,
             "args": [],
             "type": {
@@ -267,7 +283,7 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "DateTime",
                 "ofType": null
               }
             },
@@ -293,6 +309,38 @@
           {
             "name": "fileName",
             "description": "fileName",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "User ID",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "originalName",
+            "description": "originalName",
             "args": [],
             "type": {
               "kind": "NON_NULL",
@@ -744,6 +792,30 @@
             "deprecationReason": null
           },
           {
+            "name": "files",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "File",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "getLocation",
             "description": null,
             "args": [
@@ -921,11 +993,11 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "file",
+            "name": "dateUpload",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Upload",
+              "name": "DateTime",
               "ofType": null
             },
             "defaultValue": null,
@@ -967,6 +1039,18 @@
                 "name": "Int",
                 "ofType": null
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "originalName",
+            "description": "originalName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -1135,16 +1219,6 @@
             "deprecationReason": null
           }
         ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "Upload",
-        "description": "The `Upload` scalar type represents a file upload.",
-        "fields": null,
-        "inputFields": null,
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null

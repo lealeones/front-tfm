@@ -16,16 +16,16 @@ export type Scalars = {
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: { input: any; output: any; }
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: { input: any; output: any; }
 };
 
 export type CreateFileInput = {
-  file: Scalars['Upload']['input'];
+  dateUpload: Scalars['DateTime']['input'];
   /** fileHash */
   fileHash: Scalars['String']['input'];
   /** fileName */
   fileName: Scalars['String']['input'];
+  /** originalName */
+  originalName: Scalars['String']['input'];
 };
 
 export type CreateLocationInput = {
@@ -48,11 +48,15 @@ export type CreateUserInput = {
 
 export type File = {
   __typename?: 'File';
-  file: Scalars['String']['output'];
+  dateUpload: Scalars['DateTime']['output'];
   /** fileHash */
   fileHash: Scalars['String']['output'];
   /** fileName */
   fileName: Scalars['String']['output'];
+  /** User ID */
+  id: Scalars['Int']['output'];
+  /** originalName */
+  originalName: Scalars['String']['output'];
 };
 
 export type Location = {
@@ -128,6 +132,7 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   file: File;
+  files: Array<File>;
   getLocation: Location;
   location: Array<Location>;
   user: User;
@@ -158,12 +163,14 @@ export enum RolUser {
 }
 
 export type UpdateFileInput = {
-  file?: InputMaybe<Scalars['Upload']['input']>;
+  dateUpload?: InputMaybe<Scalars['DateTime']['input']>;
   /** fileHash */
   fileHash?: InputMaybe<Scalars['String']['input']>;
   /** fileName */
   fileName?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['Int']['input'];
+  /** originalName */
+  originalName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateLocationInput = {
@@ -200,6 +207,13 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
+export type CrearUsuarioMutationVariables = Exact<{
+  data: CreateUserInput;
+}>;
+
+
+export type CrearUsuarioMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', id: number } };
+
 export type GetLocationQueryVariables = Exact<{
   data: Scalars['Int']['input'];
 }>;
@@ -215,5 +229,6 @@ export type UpFileMutationVariables = Exact<{
 export type UpFileMutation = { __typename?: 'Mutation', createFile: { __typename?: 'File', fileName: string } };
 
 
+export const CrearUsuarioDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"crearUsuario"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateUserInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createUserInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<CrearUsuarioMutation, CrearUsuarioMutationVariables>;
 export const GetLocationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getLocation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getLocation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"tipe"}}]}}]}}]} as unknown as DocumentNode<GetLocationQuery, GetLocationQueryVariables>;
 export const UpFileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"upFile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"data"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateFileInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createFileInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"data"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fileName"}}]}}]}}]} as unknown as DocumentNode<UpFileMutation, UpFileMutationVariables>;

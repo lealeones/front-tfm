@@ -31,6 +31,8 @@ import FormStep1 from 'src/views/form-proj/FormStep1'
 import { FormSendStep1 } from 'src/components/FormSendProject/FormSendStep1'
 import { SendProjectContextProvider } from 'src/components/context/sendProjectContext'
 import { FormSendProject } from 'src/components/FormSendProject/FormSendProject'
+import { FormProfile } from 'src/components/FormProfile/FormProfile'
+import { ProfileContextProvider } from 'src/components/context/profileContext'
 
 
 
@@ -39,7 +41,13 @@ const Dashboard = () => {
   return (
 <SendProjectContextProvider>
 
-<FormSendProject/>
+
+<ProfileContextProvider>
+<FormProfile/>
+</ProfileContextProvider>
+
+{/* 
+<FormSendProject/> */}
 
 </SendProjectContextProvider>
 
