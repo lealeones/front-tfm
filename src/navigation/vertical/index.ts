@@ -12,8 +12,33 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
+import { useSession } from 'next-auth/react'
+
+const ItemEstudiantes = [
+  {
+    title:'Inicio',
+    icon: HomeOutline,
+    path: '/'
+  },
+  {
+    title: 'Configuración de cuenta',
+    icon: AccountCogOutline,
+    path: '/account-settings'
+  },
+  {
+    sectionTitle: 'Acciones'
+  },
+  {
+    title: 'Enviar trabajo',
+    icon: AccountCogOutline,
+    path: '/proyectos'
+  },
+]
+ 
+
 
 const navigation = (): VerticalNavItemsType => {
+
   return [
     {
       title:'Inicio',

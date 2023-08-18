@@ -55,15 +55,15 @@ if (themeConfig.routingLoader) {
 }
 
 
-  loadDevMessages();
-  loadErrorMessages();
+loadDevMessages();
+loadErrorMessages();
 
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps }  } = props
+  const { Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } } = props
   const client = new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_BACKEND_APP +'/graphql',
+    uri: process.env.NEXT_PUBLIC_BACKEND_APP + '/graphql',
     cache: new InMemoryCache(),
   });
 
@@ -72,6 +72,7 @@ const App = (props: ExtendedAppProps) => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return (
+    <SessionProvider session={pageProps.session}>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
@@ -82,19 +83,19 @@ const App = (props: ExtendedAppProps) => {
         <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-      <SessionProvider session={session}>
+
       <ApolloProvider client={client}>
-      <SettingsProvider>
-        
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
+          <SettingsProvider>
+
+            <SettingsConsumer>
+              {({ settings }) => {
+                return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              }}
+            </SettingsConsumer>
+          </SettingsProvider>
       </ApolloProvider>
-      </SessionProvider>
     </CacheProvider>
+        </SessionProvider>
   )
 }
 
