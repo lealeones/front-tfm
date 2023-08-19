@@ -13,8 +13,9 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 import { useSession } from 'next-auth/react'
+import { RolUser } from 'src/gql/graphql'
 
-const ItemEstudiantes = [
+const ItemsEstudiantes = [
   {
     title:'Inicio',
     icon: HomeOutline,
@@ -29,79 +30,63 @@ const ItemEstudiantes = [
     sectionTitle: 'Acciones'
   },
   {
-    title: 'Enviar trabajo',
+    title: 'Presentar proyecto',
     icon: AccountCogOutline,
     path: '/proyectos'
   },
 ]
+
+
+const ItemsAdministrador = [
+  {
+    title:'Inicio',
+    icon: HomeOutline,
+    path: '/'
+  },
+  {
+    title: 'Configuración de cuenta',
+    icon: AccountCogOutline,
+    path: '/account-settings'
+  },
+  {
+    sectionTitle: 'Acciones'
+  },
+  {
+    title: 'Crear usuario',
+    icon: AccountCogOutline,
+    path: '/proyectos'
+  },
+]
+
+const ItemsDefault = [
+  {
+    title:'Inicio',
+    icon: HomeOutline,
+    path: '/'
+  },
+  {
+    title: 'Configuración de cuenta',
+    icon: AccountCogOutline,
+    path: '/account-settings'
+  },
+]
  
+export type NavigationProps = {
+role : string
+}
 
+const ItemsFoRole = {
+  "ADMINISTRADOR": ItemsAdministrador,
+  "ESTUDIANTE": ItemsEstudiantes,
+  // "OTROS": <Homead />,
+  // "REVISOR": <FormProfileStep0 />,
+  "SECRETARIA": ItemsAdministrador,
+  "DEFAULT": ItemsDefault
+} 
 
-const navigation = (): VerticalNavItemsType => {
-
-  return [
-    {
-      title:'Inicio',
-
-      //title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/'
-    },
-    {
-      title: 'Account Settings',
-      icon: AccountCogOutline,
-      path: '/account-settings'
-    },
-    {
-      sectionTitle: 'Pages'
-    },
-    {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
-    },
-    {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
-    }
-  ]
+const navigation = (prop? : NavigationProps): VerticalNavItemsType => {
+  return ItemsFoRole[prop.role || "DEFAULT"]
+  //  return ItemsFoRole[prop?.role ? prop.role : "DEFAULT"]
 }
 
 export default navigation

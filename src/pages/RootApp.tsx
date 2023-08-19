@@ -1,17 +1,5 @@
 // ** Next Imports
 import type { NextPage } from 'next'
-import type { AppProps } from 'next/app'
-import { Router } from 'next/router'
-// ** Loader Import
-import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
-import NProgress from 'nprogress'
-
-
-// ** Emotion Imports
-import type { EmotionCache } from '@emotion/cache'
-
-// ** Config Imports
-import themeConfig from 'src/configs/themeConfig'
 
 // ** Component Imports
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
@@ -19,72 +7,63 @@ import UserLayout from 'src/layouts/UserLayout'
 
 // ** Contexts
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
-
-// ** Utils Imports
-import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
-
-// ** React Perfect Scrollbar Style
-import 'react-perfect-scrollbar/dist/css/styles.css'
-
-// ** Global css styles
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import '../../styles/globals.css'
+import { useEffect, useState } from 'react'
+import { ApolloClient } from '@apollo/client'
+import { signIn, useSession } from 'next-auth/react'
+import inicializarApollo from 'src/lib/apolloClient'
+import { SessionTFM } from './api/auth/[...nextauth]'
+import { useRouter } from 'next/router'
+import LoginPage from './pages/login'
+import LoadingPage from './Loading'
 
 // ** Extend App Props with Emotion
-type ExtendedAppProps = AppProps & {
-    Component: NextPage
-    emotionCache: EmotionCache
+export type RootAppProps = {
+    Component: NextPage,
+    pageProps: any
 }
-
-const clientSideEmotionCache = createEmotionCache()
-
-// ** Pace Loader
-if (themeConfig.routingLoader) {
-    Router.events.on('routeChangeStart', () => {
-        NProgress.start()
-    })
-    Router.events.on('routeChangeError', () => {
-        NProgress.done()
-    })
-    Router.events.on('routeChangeComplete', () => {
-        NProgress.done()
-    })
-}
-
-
-loadDevMessages();
-loadErrorMessages();
-
 
 // ** Configure JSS & ClassName
-const App = (props: ExtendedAppProps) => {
-    const { Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } } = props
-    const client = new ApolloClient({
-        uri: process.env.NEXT_PUBLIC_BACKEND_APP + '/graphql',
-        cache: new InMemoryCache(),
-    });
+const RootApp = (props: RootAppProps) => {
+    const { Component, pageProps } = props
+    const [client, setClient] = useState<ApolloClient<any>>();
+    const { status, data } = useSession();
+    const router = useRouter();
+    const session: SessionTFM = data as any
 
+console.log("variables IF ", !session , status )
+console.log("session", session)
+useEffect(() => {
+    if(  status === 'unauthenticated' ) router.replace('/pages/login')
+    if (status === 'loading')  <LoadingPage/>
+}
+    , [status])
 
-    // Variables
+    
     const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
+
+    
+    //<LoginPage/>
 
     return (
         <>
-            {client && (
-                <ApolloProvider client={client}>
-                    <SettingsProvider>
-                        <SettingsConsumer>
-                            {({ settings }) => {
-                                return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-                            }}
-                        </SettingsConsumer>
-                    </SettingsProvider>
-                </ApolloProvider>
-            )}
 
+         (<SettingsProvider>
+                <SettingsConsumer>
+                    {({ settings }) => {
+                        return <ThemeComponent settings={settings}>
+                            
+                            {getLayout(<Component {...pageProps} />)}
+                            
+                            
+                            </ThemeComponent>
+                    }}
+                </SettingsConsumer>
+            </SettingsProvider>
+)
+            
 
         </>
     )
 }
 
-export default App
+export default RootApp

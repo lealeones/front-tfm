@@ -19,6 +19,8 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import { useSession } from 'next-auth/react'
+import { SessionTFM } from 'src/pages/api/auth/[...nextauth]'
 
 interface Props {
   children: ReactNode
@@ -27,6 +29,8 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
+const {data} = useSession();
+const session : SessionTFM  = data as any
 
   /**
    *  The below variable will hide the current layout menu at given screen size.
@@ -41,13 +45,7 @@ const UserLayout = ({ children }: Props) => {
   const UpgradeToProImg = () => {
     return (
       <Box sx={{ mx: 'auto' }}>
-        <a
-          target='_blank'
-          rel='noreferrer'
-          href='https://themeselection.com/products/materio-mui-react-nextjs-admin-template/'
-        >
-          <img width={230} alt='upgrade to premium' src={`/images/misc/upgrade-banner-${settings.mode}.png`} />
-        </a>
+    
       </Box>
     )
   }
@@ -57,7 +55,7 @@ const UserLayout = ({ children }: Props) => {
       hidden={hidden}
       settings={settings}
       saveSettings={saveSettings}
-      verticalNavItems={VerticalNavItems()} // Navigation Items
+      verticalNavItems={VerticalNavItems ( {role: undefined ?? session?.token.rol})} // Navigation Items
       afterVerticalNavMenuContent={UpgradeToProImg}
       verticalAppBarContent={(
         props // AppBar Content
@@ -71,7 +69,6 @@ const UserLayout = ({ children }: Props) => {
       )}
     >
       {children}
-      <UpgradeToProButton />
     </VerticalLayout>
   )
 }

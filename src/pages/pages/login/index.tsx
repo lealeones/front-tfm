@@ -66,8 +66,6 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 const LoginPage = () => {
-  const { data: session, status, update } = useSession({ required: false })
-
 
   // ** State
   const [values, setValues] = useState<State>({
@@ -97,10 +95,10 @@ const LoginPage = () => {
     {
       ...values,
       redirect: true,
-      callbackUrl:'localhost:3000'
+      callbackUrl:'/'
     });
 
-  console.log("session status ", res)
+
 
   }
 
@@ -109,8 +107,6 @@ const LoginPage = () => {
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
-        {JSON.stringify(session)}
-        {JSON.stringify(status)}
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg

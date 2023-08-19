@@ -1,27 +1,19 @@
 // ** Next Imports
+import type { NextPage } from 'next'
+import { SessionProvider } from "next-auth/react"
+import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Router } from 'next/router'
-import type { NextPage } from 'next'
-import type { AppProps } from 'next/app'
-import { SessionProvider } from "next-auth/react"
 // ** Loader Import
+import { loadDevMessages, loadErrorMessages } from "@apollo/client/dev"
 import NProgress from 'nprogress'
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-
 
 // ** Emotion Imports
-import { CacheProvider } from '@emotion/react'
 import type { EmotionCache } from '@emotion/cache'
+import { CacheProvider } from '@emotion/react'
 
 // ** Config Imports
 import themeConfig from 'src/configs/themeConfig'
-
-// ** Component Imports
-import UserLayout from 'src/layouts/UserLayout'
-import ThemeComponent from 'src/@core/theme/ThemeComponent'
-
-// ** Contexts
-import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
@@ -30,8 +22,10 @@ import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
-import '../../styles/globals.css'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import '../../styles/globals.css'
+import RootApp from './RootApp'
+import inicializarApollo from 'src/lib/apolloClient'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -40,7 +34,6 @@ type ExtendedAppProps = AppProps & {
 }
 
 const clientSideEmotionCache = createEmotionCache()
-
 // ** Pace Loader
 if (themeConfig.routingLoader) {
   Router.events.on('routeChangeStart', () => {
@@ -54,48 +47,34 @@ if (themeConfig.routingLoader) {
   })
 }
 
-
 loadDevMessages();
 loadErrorMessages();
-
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } } = props
-  const client = new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_BACKEND_APP + '/graphql',
-    cache: new InMemoryCache(),
-  });
-
-
-  // Variables
-  const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
+  const client = inicializarApollo();
 
   return (
     <SessionProvider session={pageProps.session}>
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
-        <meta
-          name='description'
-          content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
-        />
-        <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
-      </Head>
-
-      <ApolloProvider client={client}>
-          <SettingsProvider>
-
-            <SettingsConsumer>
-              {({ settings }) => {
-                return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-              }}
-            </SettingsConsumer>
-          </SettingsProvider>
-      </ApolloProvider>
-    </CacheProvider>
-        </SessionProvider>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+          <meta
+            name='description'
+            content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+          />
+          <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
+        <ApolloProvider client={client}>
+          <RootApp
+            Component={Component}
+            pageProps={pageProps}
+          />
+        </ApolloProvider>
+      </CacheProvider>
+    </SessionProvider>
   )
 }
 

@@ -1,12 +1,19 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, useQuery } from "@apollo/client";
 
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials"
 import login from "src/backend-tfm/query/login";
-import { LoginInput } from "src/gql/graphql";
-import { userLogedIn } from "./[...nextauth] copy";
-import { AuthOptions } from "next-auth/core/types";
+import { LoginInput, RolUser } from "src/gql/graphql";
 
+import { AuthOptions } from "next-auth/core/types";
+export type userLogedIn = {
+  id: number;
+  username: string;
+  mail: string;
+  name: string;
+  lastname: string;
+  rol: RolUser
+}
 // export type token
 export type SessionTFM = {
   expires: string
@@ -52,11 +59,13 @@ export const authOptions : AuthOptions = {
           username: username,
           pwd: password
         }
+
+     
         const { data, error, loading } = await client.query({
           query: login,
           variables: { data: dataQuery }
         })
-
+        console.log("data query",data)
         if (data) {
           const user: userLogedIn = {
             id: data.login.id,
@@ -83,10 +92,10 @@ export const authOptions : AuthOptions = {
       return {...session, token  }
      },
   },
-
-  pages: {
-    signIn: "/pages/login",
-  }
+  secret: process.env.NEXTAUTH_SECRET,
+  // pages: {
+  //   signIn: "/pages/login",
+  // }
 
 }
 export default NextAuth(authOptions)
