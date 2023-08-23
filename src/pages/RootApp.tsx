@@ -30,37 +30,37 @@ const RootApp = (props: RootAppProps) => {
     const router = useRouter();
     const session: SessionTFM = data as any
 
-console.log("variables IF ", !session , status )
-console.log("session", session)
-useEffect(() => {
-    if(  status === 'unauthenticated' ) router.replace('/pages/login')
-    if (status === 'loading')  <LoadingPage/>
-}
-    , [status])
+    console.log("variables IF ", !session, status)
+    console.log("session", session)
+    useEffect(() => {
+        if (status === 'unauthenticated') router.replace('/pages/login')
 
-    
+    }
+        , [status])
+
+    if (status === 'loading') if (status === 'loading') return <LoadingPage />
     const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
-    
+
     //<LoginPage/>
 
     return (
         <>
 
-         (<SettingsProvider>
+            (<SettingsProvider>
                 <SettingsConsumer>
                     {({ settings }) => {
                         return <ThemeComponent settings={settings}>
-                            
+
                             {getLayout(<Component {...pageProps} />)}
-                            
-                            
-                            </ThemeComponent>
+
+
+                        </ThemeComponent>
                     }}
                 </SettingsConsumer>
             </SettingsProvider>
-)
-            
+            )
+
 
         </>
     )

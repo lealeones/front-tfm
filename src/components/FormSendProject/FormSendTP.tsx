@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useSendProjectContext } from '../context/sendProjectContext';
 import { ButtonForm } from "../util/ButtonForm";
 
-export const FormSendStep1 = () => {
+export const FormSendTP = () => {
   const { activeStep, steps, dataForms, keyWords, setActiveStep, setKeyWords, handleSetDataForms, handleClickNext, handleClickBack } = useSendProjectContext()
   const [currWord, setCurrWord] = useState<string>('');
  

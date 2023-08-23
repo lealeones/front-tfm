@@ -3,6 +3,9 @@ const path = require('path')
 module.exports = {
   trailingSlash: true,
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
+  },
   experimental: {
     esmExternals: false,
     jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json

@@ -13,6 +13,8 @@ export type DataFormProfile = {
     rol: RolUser,
     student: string //Student?
     reviewer: string //Reviewer?
+    titleReviewer: string
+    cv_pathReviewer: string
 }
 
 
@@ -28,7 +30,9 @@ export const dataFormProfileEmpty: DataFormProfile = {
     lastname: "",
     rol: RolUser.Otros,
     student: "",
-    reviewer: ""
+    reviewer: "",
+    titleReviewer: "",
+    cv_pathReviewer: "",
 }
 
 
@@ -57,7 +61,9 @@ export default function inicializarDataFormProfile(dataForm?: FormProfileDataPro
             lastname: dataForm.dataForm.lastname,
             rol: dataForm.dataForm.rol,
             student: dataForm.dataForm.student,
-            reviewer: dataForm.dataForm.reviewer
+            reviewer: dataForm.dataForm.reviewer,
+            titleReviewer: dataForm.dataForm.titleReviewer,
+            cv_pathReviewer: dataForm.dataForm.cv_pathReviewer,
         }
 
         return dataQuery

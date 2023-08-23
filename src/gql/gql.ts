@@ -13,6 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\nmutation CrearAlumno ($data:CreateUserAlumno!){\n    createUserAlumno(createUserAlumno:$data){\n      id\n    }\n  }\n": types.CrearAlumnoDocument,
+    "\nmutation CrearRevisor ($data:CreateUserRevisorInput!){\n    createUserRevisor(createUserRevisorInput:$data){\n      id\n    }\n  }\n": types.CrearRevisorDocument,
     "\nmutation crearUsuario($data:CreateUserInput!){\n  createUser(createUserInput:$data){\n    id\n  }\n}\n": types.CrearUsuarioDocument,
     "\nquery getLocation ($data: Int!){\n  getLocation(id:$data){\n      title\n      description\n      tipe\n    }\n  }\n": types.GetLocationDocument,
     "\nquery login ($data:LoginInput!){\n    login(loginInput:$data){\n      id\n      username\n      mail\n      name\n      lastname\n      rol\n    }\n  }\n  ": types.LoginDocument,
@@ -33,6 +35,14 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nmutation CrearAlumno ($data:CreateUserAlumno!){\n    createUserAlumno(createUserAlumno:$data){\n      id\n    }\n  }\n"): (typeof documents)["\nmutation CrearAlumno ($data:CreateUserAlumno!){\n    createUserAlumno(createUserAlumno:$data){\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\nmutation CrearRevisor ($data:CreateUserRevisorInput!){\n    createUserRevisor(createUserRevisorInput:$data){\n      id\n    }\n  }\n"): (typeof documents)["\nmutation CrearRevisor ($data:CreateUserRevisorInput!){\n    createUserRevisor(createUserRevisorInput:$data){\n      id\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

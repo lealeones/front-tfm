@@ -22,7 +22,8 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+import { SessionTFM } from 'src/pages/api/auth/[...nextauth]'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -34,6 +35,8 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 }))
 
 const UserDropdown = () => {
+  const { data } = useSession()
+  const session: SessionTFM = data as any
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
@@ -44,11 +47,12 @@ const UserDropdown = () => {
     setAnchorEl(event.currentTarget)
   }
 
+const handleLogout = () => {
+
+  signOut({ redirect: true, callbackUrl: '/pages/login' })
+}
+
   const handleDropdownClose = (url?: string) => {
-
-
-    signOut()
-   
     setAnchorEl(null)
   }
 
@@ -65,6 +69,8 @@ const UserDropdown = () => {
       color: 'text.secondary'
     }
   }
+
+if (!session) return <div>recuperando session...</div>
 
   return (
     <Fragment>
@@ -100,9 +106,9 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{session.token.name + ' ' + session.token.lastname}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
+                {session.token.rol}
               </Typography>
             </Box>
           </Box>
@@ -146,7 +152,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => handleLogout()}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

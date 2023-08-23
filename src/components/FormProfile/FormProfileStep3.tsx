@@ -1,33 +1,21 @@
 import SendIcon from '@mui/icons-material/Send';
 import { Box, Button, Card, CardContent } from '@mui/material';
+import { useState } from 'react';
 import { useProfileContext } from '../context/profileContext';
-import { useMutation, useQuery } from '@apollo/client';
-import { crearUsuario } from 'src/backend-tfm/mutation/crearUsuario';
-import { CreateUserInput } from 'src/gql/graphql';
+import DialogCreate from '../util/DialogCreate';
 export const FormProfileStep3 = () => {
-    const { dataForms } = useProfileContext()
- 
-// action mutation "crearUsuario" apollo query
+    const { dataForms,handleCrear} = useProfileContext()
 
-const [addUser, { data, loading, error }] = useMutation(crearUsuario);
+//const [addUser, { data, loading, error }] = useMutation(crearUsuario);
 
-
-
-    const handleEnviar = () => {
-
-        const data : CreateUserInput = {
-            lastname: dataForms.lastname,
-            mail: dataForms.mailpw,
-            name: dataForms.name,
-            pwd: dataForms.pwd,
-            rol: dataForms.rol,
-            username: dataForms.username
-        }
-        addUser({  variables: {data} })
-        console.log(dataForms)
+const  [ res , setRes ] = useState<any>(false)
+    const handleEnviar = async () => {
+        setRes(await handleCrear()) 
+        console.log("dataform",dataForms) 
     }
     return (
         <Box>
+           {res && <DialogCreate data={dataForms}/>} 
             <Card>
                 <CardContent>
                     {JSON.stringify(dataForms)}
@@ -38,7 +26,7 @@ const [addUser, { data, loading, error }] = useMutation(crearUsuario);
             onClick={handleEnviar}
              variant="contained" 
             endIcon={<SendIcon />}>
-                Enviar
+                Crear
             </Button>
 
         </Box>

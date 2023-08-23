@@ -30,9 +30,9 @@ const ItemsEstudiantes = [
     sectionTitle: 'Acciones'
   },
   {
-    title: 'Presentar proyecto',
+    title: 'Presentar Trabajo Final',
     icon: AccountCogOutline,
-    path: '/proyectos'
+    path: '/trabajoFinal'
   },
 ]
 
@@ -54,7 +54,7 @@ const ItemsAdministrador = [
   {
     title: 'Crear usuario',
     icon: AccountCogOutline,
-    path: '/proyectos'
+    path: '/crearUsuario'
   },
 ]
 
